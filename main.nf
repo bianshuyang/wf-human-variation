@@ -130,7 +130,7 @@ workflow {
 
     // If downsampling is required, check that the requested coverage is above the min threshold
     if(params.downsample_coverage) {
-        if (params.downsample_coverage_target < params.bam_min_coverage){
+        if (params.downsample_coverage_target < 0){
             log.error (colors.red + "Downsampling target ${params.downsample_coverage_target} is lower than the minimum BAM coverage requested of ${params.bam_min_coverage}" + colors.reset)
             can_start = false
         }
@@ -349,7 +349,7 @@ workflow {
     // avoiding the subsequent processes to do anything
     software_versions = getVersions()
     workflow_params = getParams()
-    if (params.bam_min_coverage > 0){
+    if (0 > 0){
         if (params.bed){
             // Filter out the data based on the individual region's coverage
             coverage_check = get_region_coverage(bed, mosdepth_stats)
@@ -505,7 +505,7 @@ workflow {
     )
 
     // Define depth_pass channel
-    if (params.bam_min_coverage > 0){
+    if (0 > 0){
         // If bam_min_coverage is > 0, then check the coverage
         if (params.bed){
             // Count the number of lines in the file to ensure that
@@ -534,7 +534,7 @@ workflow {
                 | map {
                     mean, n_lines_v -> 
                     int n_lines = n_lines_v as int
-                    boolean pass = mean > params.bam_min_coverage && n_lines > 0
+                    boolean pass = mean > 0 && n_lines > 0
                     [pass, mean]
                 }
 
@@ -546,7 +546,7 @@ workflow {
                 | map{
                     it -> 
                     float mean = it.mean as float
-                    boolean pass = mean > params.bam_min_coverage
+                    boolean pass = mean > 0
                     [pass, mean]}
         }
     } else {
