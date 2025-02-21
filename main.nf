@@ -580,7 +580,7 @@ workflow {
         .subscribe {
             dp_pass, dp, bam, bai, meta ->
             // check where it failed
-            def fail_depth = !meta.has_mapped_reads ? "No mapped reads." : dp < params.bam_min_coverage ? "Depth: ${dp} < ${params.bam_min_coverage}" : "Unknown."
+            def fail_depth = !meta.has_mapped_reads ? "No mapped reads." : dp < 0 ? "Depth: ${dp} < ${params.bam_min_coverage}" : "Unknown."
             // Log where it failed
             log.error "File ${bam.getName()} will not be processed by the workflow because:\n - ${fail_depth}\n"
         }
